@@ -1,0 +1,259 @@
+{
+  "main": {
+    "id": "4b15884887a973da",
+    "type": "split",
+    "children": [
+      {
+        "id": "2313b101868c3b80",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "16df15d443c44a3e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Scamper - a Scalable and Extensible Packet Prober for Active Measurement of the Internet.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Scamper - a Scalable and Extensible Packet Prober for Active Measurement of the Internet"
+            }
+          },
+          {
+            "id": "f48cfb8d02c1aa7d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Linux stuff.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Linux stuff"
+            }
+          },
+          {
+            "id": "4c3c1d88ccc5fee8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Open5GS Cell Network.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Open5GS Cell Network"
+            }
+          },
+          {
+            "id": "0a423f29988b2bc6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Big words.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Big words"
+            }
+          },
+          {
+            "id": "521380f115095853",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Scamper - a Scalable and Extensible Packet Prober for Active Measurement of the Internet.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Scamper - a Scalable and Extensible Packet Prober for Active Measurement of the Internet"
+            }
+          },
+          {
+            "id": "05472673062039b6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Avoiding traceroute anomalies with Paris traceroute.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Avoiding traceroute anomalies with Paris traceroute"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "5eaf996f602a9723",
+    "type": "split",
+    "children": [
+      {
+        "id": "ac9bdf3638353e0e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3312c0e099ffd93b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "be7e926d1ee91af9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "4358133da4c4ad41",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "8226fda387670124",
+    "type": "split",
+    "children": [
+      {
+        "id": "f6b672edf218e69c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "070395c4ddb82ef9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Untitled.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Untitled"
+            }
+          },
+          {
+            "id": "41bbc91c94f49ccf",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Untitled.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Untitled"
+            }
+          },
+          {
+            "id": "3ba2335b89e7acfa",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "99f1185143f3f59d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Untitled.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Untitled"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "3312c0e099ffd93b",
+  "lastOpenFiles": [
+    "Inferring Persistent Interdomain Congestion.md",
+    "Open5GS Cell Network.md",
+    "images/Pasted image 20250912111345.png",
+    "Linux stuff.md",
+    "images",
+    "images/Pasted image 20250909122220.png",
+    "Scamper - a Scalable and Extensible Packet Prober for Active Measurement of the Internet.md",
+    "Subsea cable project notes.md",
+    "Big words.md",
+    "Avoiding traceroute anomalies with Paris traceroute.md",
+    "TTL.md",
+    "Ping.md",
+    "Traceroute.md"
+  ]
+}
