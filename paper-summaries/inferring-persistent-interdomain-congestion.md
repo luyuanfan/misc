@@ -1,6 +1,3 @@
-Paper summary:
-
----
 System modules:
 ==[_bdrmap_](https://www.caida.org/catalog/datasets/bdrmap_dataset/)== tracks what target ASes belongs to what organizations **and** how/if they are reachable.
 - _[CAIDA](https://www.caida.org/)(Center for Applied Internet Data Analysis)_ is in San Diego. 
