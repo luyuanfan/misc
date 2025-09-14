@@ -1,3 +1,6 @@
+## general
+
+loop back addresses - special ip addresses for sending packets across the same machine. conventionally the entire `127.0.0.0` to `127.255.255.255` range is reserved for this. 
 ## ssh
 
 Do:
@@ -18,11 +21,11 @@ Host <hostname>
 ```
 
 ---
-## Installing things on linux
+## installing things on linux
 
-If not root user, put things in `~/.local/` (usually) with `PREFIX=$SOMEWHERE`
+1. If not root user, put things in `~/.local/` (usually) with `PREFIX=$SOMEWHERE`
 
-There's a few things:
+2. There's a few things:
 ```
 sudo apt update
 sudo apt install
@@ -36,7 +39,14 @@ apt show <packagename>
 - `remove` does delete but keeps the config files (if some customized settings were made)
 - `purge` on the other hand deletes fully everything 
 
-The `var` directory stores things that will likely change a lot, such as website and databases. 
+3. The `var` directory stores things that will likely change a lot, such as website and databases. 
+
+4. PPA (personal package archive) - is a repository supported by ubuntu where users can install packages outside of official ubuntu repositories. 
+```
+sudo add-apt-repository ppa:<pathtotherepo>
+sudo apt-get update
+sudo apt-get install
+```
 
 ---
 ## misc commands
