@@ -37,6 +37,17 @@ seems like when an UE actually connects, you should see ([ref](https://github.co
 
 so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
 
+```
+09/15 11:31:16.493: [app] INFO: Configuration: '/etc/open5gs/upf.yaml' (../lib/app/ogs-init.c:144)
+09/15 11:31:16.493: [app] INFO: File Logging: '/var/log/open5gs/upf.log' (../lib/app/ogs-init.c:147)
+09/15 11:31:16.514: [metrics] INFO: metrics_server() [http://127.0.0.7]:9090 (../lib/metrics/prometheus/context.c:300)
+09/15 11:31:16.514: [pfcp] INFO: pfcp_server() [127.0.0.7]:8805 (../lib/pfcp/path.c:30)
+09/15 11:31:16.514: [sock] ERROR: socket bind(2) [10.11.0.7]:2152 failed (99:Cannot assign requested address) (../lib/core/ogs-socket.c:114)
+09/15 11:31:16.514: [sock] ERROR: udp_server() [10.11.0.7]:2152 failed (99:Cannot assign requested address) (../lib/core/ogs-udp.c:67)
+09/15 11:31:16.514: [app] ERROR: Failed to initialize UPF (../src/upf/app.c:28)
+09/15 11:31:16.514: [app] FATAL: Open5GS initialization failed. Aborted (../src/main.c:224)
+```
+
 ---
 ## Flow
 user equipment (phone + sim) → \[sends radio signal to] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
