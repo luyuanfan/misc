@@ -1,6 +1,27 @@
-Notes - uhd building from source is also being weird. so rn we use the 4.9.0 release. **but i believe the 4.0.0 or 3.1.5. are the ones compatible with srsran** (rn with 4.9.0 there's an error when building srsran but it can be fixed by adding a line which is sketchy ig) -- so def switch back to that later if curr setup works. 
+Notes -
+
+- uhd is package (has bugs i think)
+- open5gs is package
+- srsran is built from source
+
+uhd building from source is also being weird. so rn we use the 4.9.0 release. **but i believe the 4.0.0 or 3.1.5. are the ones compatible with srsran** (rn with 4.9.0 there's an error when building srsran but it can be fixed by adding a line which is sketchy ig) -- so def switch back to that later if curr setup works. 
 
 open5gs build from source is also buggy. there is a open5gs vonr error that idk where it's from. trying with package (did not config logging, but that'll only affect journalctl prints ig so it's not a big deal; also webui is facing some troubles because srsran_proj does not have a release, i have to remove its ppa before **running(???)** the open5gs web page)
+
+srsran ppa has some problems i think. will look into what it is but since we build from source it doesn't matter. srsran build from source goes alright so long as i add a line in radio/uhd/radio_uhd_tx_stream on line 57 that falls through the case of event_code_ok. might be because my uhd version is too new. 
+
+install open5gs before srsran
+
+to use `uhd_usrp_probe`, you gotta unplug and replug. 
+
+and them you can run the gnb (with srsran) by passing in one of those yml files in the `configs` in the root folder.
+- rn running `gnb` after making sure the device is there gives in error. it says 'connection refused cu-up failed to connect with AMF on `127.01.100:38412`. which is kinda bullshit bc open5gs asks me to configure amf-ngap on `10.10.05` instead of `127.01.100`. why is gnb trying to connect to that address?? 
+- the guide said the only thing running on port 38412 should be amf-ngap on `127.0.0.5` so i'll try to change that. 
+when creating subscriber it also needs a AMF field which defaults to `8000`, dnn defaults to `internet` 
+
+so when trying to run `gnb` the reason it connects that way is that the config files in srsran project says to. according [this running open5gs page](https://open5gs.org/open5gs/docs/guide/01-quickstart/), must "- Make sure the PLMN and TAC of the eNB/gNB matches the settings in your MME/AMF". so this is defined in `srsRAN_Project/configs/b200smth` 
+
+NOW: so now i've changed the srsran gnb config and can try to run again. 
 
 ---
 ## Flow
@@ -35,8 +56,9 @@ MME (mobility management entity; 4G) & AMF (authentication management field; 5G)
 ### apn & dnn
 **APN** (access point name) & **DNN** (data network name) - APN in EPS (powers 3G) is the same as DNN in 5G. 
 - APN is composed of two parts:
-	- APN network id (*mandatory*) - defines to which external network the GGSN/PGW is connected and optionally a requested service by the MS. This part of the APN is mandatory.
-	- APN operator id (*optional*) - defines in which PLMN GPRS/EPS backbone the GGSN/PGW is located
+	- APN network id (*mandatory*)
+	- APN operator id (*optional*)
+- but i feel like they both have some default value in testing. 
 ### setting up WAN connectivity
 1. enable IP forwarding:
 ```
