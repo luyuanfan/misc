@@ -35,9 +35,7 @@ if NGAP and N2 and NG are the same thing, then my connection should be successfu
 
 seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one 
 
-next step:
-- mysterious port 46977 shows up. 
-- try wireshark
+so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
 
 ---
 ## Flow
@@ -141,3 +139,5 @@ NG (= N2 + N3) is the interface between gNB and 5g core (i.e., srsRAN and open5G
 NGAP is the protocol that runs over N2 interface. 
 
 ![[n2-handover-procedure.png]]
+### RAN
+radio access network
