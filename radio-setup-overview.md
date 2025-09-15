@@ -12,7 +12,7 @@ srsran ppa has some problems i think. will look into what it is but since we bui
 
 install open5gs before srsran
 
-to use `uhd_usrp_probe`, you gotta unplug and replug. 
+to use `uhd_usrp_probe`, make sure to unplug and replug. 
 
 and them you can run the gnb (with srsran) by passing in one of those yml files in the `configs` in the root folder.
 - rn running `gnb` after making sure the device is there gives in error. it says 'connection refused cu-up failed to connect with AMF on `127.01.100:38412`. which is kinda bullshit bc open5gs asks me to configure amf-ngap on `10.10.05` instead of `127.01.100`. why is gnb trying to connect to that address?? 
@@ -22,6 +22,22 @@ when creating subscriber it also needs a AMF field which defaults to `8000`, dnn
 so when trying to run `gnb` the reason it connects that way is that the config files in srsran project says to. according [this running open5gs page](https://open5gs.org/open5gs/docs/guide/01-quickstart/), must "- Make sure the PLMN and TAC of the eNB/gNB matches the settings in your MME/AMF". so this is defined in `srsRAN_Project/configs/b200smth` 
 
 NOW: so now i've changed the srsran gnb config and can try to run again. 
+
+something is not persistent after rebooting might have to do that (some image with uhd or smth) again?? well when i did probe it's fine it's there. 
+
+yay it connects!
+
+when adding APNs on phone, turns out i can't use mcc/mnc with 001/01, but must use 999/70. 
+- so i changed the the config in srsran/configs/b200
+- also the `amf` and `nrf` and `upf` 
+
+if NGAP and N2 and NG are the same thing, then my connection should be successful. 
+
+seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one 
+
+next step:
+- mysterious port 46977 shows up. 
+- try wireshark
 
 ---
 ## Flow
@@ -120,3 +136,8 @@ notes - example configs can be found at `/usr/share/srsran`
 ### split 8 & split 7.2  
 i think it's a separation of functions where split 8 has their hardware with uhd separated out instead of having everything in a big chunk in 7.2.
 
+### NG, N2, N3, NGAP
+NG (= N2 + N3) is the interface between gNB and 5g core (i.e., srsRAN and open5GS). N2 is the authentication module and N3 is the user plane module (UPF). 
+NGAP is the protocol that runs over N2 interface. 
+
+![[n2-handover-procedure.png]]
