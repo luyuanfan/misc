@@ -181,3 +181,56 @@ NGAP is the protocol that runs over N2 interface.
 
 ![[n2-handover-procedure.png]]
 
+
+
+### GNB config
+```
+# This example configuration outlines how to configure the srsRAN Project gNB to create a single TDD cell
+# transmitting in band 78, with 20 MHz bandwidth and 30 kHz sub-carrier-spacing. A USRP B200 is configured
+# as the RF frontend using split 8. Note in this example an external clock source is not used, so the sync
+# is not defined and the default is used.
+
+cu_cp:
+  amf:
+    addr: 127.0.0.5 # Jasmine: changed this from 127.0.1.100
+    port: 38412
+    bind_addr: 127.0.0.1
+    bind_interface: auto
+    supported_tracking_areas:
+      - tac: 7 # Jasmine: changed this from 7
+        plmn_list:
+          # - plmn: "00101" # Jasmine: changed this so UE can add APN
+          - plmn: "99970"
+          # - plmn: "99999"
+            tai_slice_support_list:
+              - sst: 1
+
+ru_sdr:
+  device_driver: uhd
+  device_args: type=b200,num_recv_frames=64,num_send_frames=64
+  # sync: external
+  srate: 23.04 # Jasmine: might adjust based on phone model
+  otw_format: default #sc12
+  tx_gain: 80  # Jasmine: might adjust based on phone model
+  rx_gain: 40  # Jasmine: might adjust based on phone model
+
+cell_cfg:
+  dl_arfcn: 632628  # Jasmine: not sure what this does
+  band: 78
+  channel_bandwidth_MHz: 20
+  common_scs: 30
+  plmn: "99970"
+  tac: 7 # Jasmine: changed this from 7 to match core config
+  pci: 1
+
+log:
+  filename: /tmp/gnb.log
+  all_level: warning
+
+pcap:
+  mac_enable: false
+  mac_filename: /tmp/gnb_mac.pcap
+  ngap_enable: false
+  ngap_filename: /tmp/gnb_ngap.pcap
+```
+### phone model nothing phone (2)
