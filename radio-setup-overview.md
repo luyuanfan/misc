@@ -1,8 +1,13 @@
 Notes -
 
-- uhd is package (has bugs i think)
+- uhd is package (no source cuz it has bugs or version not stable)
 - open5gs is package
 - srsran is built from source
+
+plug usrp
+probe
+run uhd
+see log
 
 uhd building from source is also being weird. so rn we use the 4.9.0 release. **but i believe the 4.0.0 or 3.1.5. are the ones compatible with srsran** (rn with 4.9.0 there's an error when building srsran but it can be fixed by adding a line which is sketchy ig) -- so def switch back to that later if curr setup works. 
 
@@ -36,6 +41,8 @@ if NGAP and N2 and NG are the same thing, then my connection should be successfu
 seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one 
 
 so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
+
+maybe some of the daemons are funky. not sure how to alter them. at least i added scripts to start and stop all modules in `/etc/open5gs` . 
 
 ---
 ## Flow
