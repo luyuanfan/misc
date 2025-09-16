@@ -26,36 +26,27 @@ when creating subscriber it also needs a AMF field which defaults to `8000`, dnn
 
 so when trying to run `gnb` the reason it connects that way is that the config files in srsran project says to. according [this running open5gs page](https://open5gs.org/open5gs/docs/guide/01-quickstart/), must "- Make sure the PLMN and TAC of the eNB/gNB matches the settings in your MME/AMF". so this is defined in `srsRAN_Project/configs/b200smth` 
 
-NOW: so now i've changed the srsran gnb config and can try to run again. 
-
 something is not persistent after rebooting might have to do that (some image with uhd or smth) again?? well when i did probe it's fine it's there. 
 
-when adding APNs on phone, turns out i can't use mcc/mnc with 001/01, but must use 999/70. 
-- so i changed the the config in srsran/configs/b200
-- also the `amf` and `nrf` and `upf` 
+we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
 
-if NGAP and N2 and NG are the same thing, then my connection should be successful. 
+when adding APNs on phone, turns out i can't use mcc/mnc with 001/01 nor 999/99, so I use the default 999/70 in all config files. 
 
-seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one 
+seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one`
 
-so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
-
-maybe some of the daemons are funky. not sure how to alter them. at least i added scripts to start and stop all modules in `/etc/open5gs` . 
-
-`upf` gtpu address looks weird, why we use that?
+added bash scripts to restart all open5gs daemons. 
 
 few directions: 
 - look at ngap handler, not sure where to find it. 
 - more config in usrp related to upf? 
-- upf config in open5gs says gtpu should be `10.11.0.7` but??? 
-- [ ] 99999 or 00101 does not allow adding APN on phones. so i'm using the default 99970, and if i want to use that, i'll need to turn on data roaming or something? 
-- [ ] look at open5gs photo 
+- [x] upf config in open5gs says gtpu should be `10.11.0.7` but??? if gnb and core are running on the same machine, keeping it 127.* should be fine. 
+- [x] 99999 or 00101 does not allow adding APN on phones. so i'm using the default 99970, and if i want to use that, i'll need to turn on data roaming or something? 
+- [x] look at open5gs photo
+- [ ] believe the problem is that the station is broadcasting with some freqs or stuff that my phone cannot take or something. 
 
----
 ## Flow
 user equipment (phone + sim) → \[sends radio signal to] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
 
----
 ## Open5GS
 Overview - is a software that builds the authenticating and routing for a cellular network (the signal processing stuff are handled by srsRAN, described below); supports both 4G/LTE and 5G networks.
 
@@ -83,19 +74,22 @@ NSSF - Network Slice Selection Function
 BSF - Binding Support Function
 ```
 
-- NRF - registers and location of all other core services and does (IP address) lookups when one needs to communicate with another. 
+- ==NRF== - registers and location of all other core services and does (IP address) lookups when one needs to communicate with another. 
 - SCP - routes messages between core services if direct communication isn't possible.
 - SEPP - secures communication between two different mobile networks.
-- AMF - stores and does authentication, registration with subscribers (phones).
+- ==AMF== - stores and does authentication, registration with subscribers (phones).
+	- NGAP - is the protocol handling communication between AMF and the base station.
 - SMF - set up connection session with internet when phone tries to connect to internet.
-- UPF - does the actual data forwarding.
+- ==UPF== - does the actual data forwarding.
+	- asks for gtp-u server address
+		- GPRS Tunnelling Protocol (GTP); gtp-u carries data between RAN's and core networks.
+		- Listen for GTP-U traffic on this IP address. 
 - AUSF - authenticates subscriber info, like checking if sim card info is valid. 
 - UDM - not sure! 
 - UDR - that's what mongodb does here i believe, it stores subscriber info. 
 - PCF - not sure! 
 - NSSF - assign the right slice of a network.
 - BSF - not sure! 
-
 ### Mobile network & cellular network
 are used interchangeably.
 ### 5G network slicing
@@ -145,7 +139,6 @@ $ sudo ip6tables -t nat -A POSTROUTING -s 2001:db8:cafe::/48 ! -o ogstun -j MASQ
 GPRS (General Packet Radio Services) - is 2.5G network. It's the first to move from circuit-switched data to packet-switched data. 
 - GGSN (Gateway GPRS Support Node) supports it.
 
----
 ## USRP & UHD
 Overview - USRP and antenna is the hardware part that receives and transmit radio signals;
 UHD (stands for usrp hardware driver) is just a driver that talks in between hardware and srsRAN (which does all the signal processing part).
@@ -164,7 +157,6 @@ is a word for all the circuitry that converts radio signals to some kind of inte
 ### Software defined radio
 after getting the radio signals from hardware, but most processing (such as modulation) are done by software as opposed to having dedicated circuitry in a traditional radio. so there must be something **in the hardware** that converts signals **from radio to digital**. 
 
----
 ## srsRAN
 Overview - the software part of software defined radio; does the modulation and all the processing type things; what comes out of it gets passed into open5gs and gets routed into real internet. 
 ### RAN
