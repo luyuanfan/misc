@@ -38,15 +38,6 @@ seems like when an UE actually connects, you should see ([ref](https://github.co
 so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
 
 ```
-09/15 11:31:16.493: [app] INFO: Configuration: '/etc/open5gs/upf.yaml' (../lib/app/ogs-init.c:144)
-09/15 11:31:16.493: [app] INFO: File Logging: '/var/log/open5gs/upf.log' (../lib/app/ogs-init.c:147)
-09/15 11:31:16.514: [metrics] INFO: metrics_server() [http://127.0.0.7]:9090 (../lib/metrics/prometheus/context.c:300)
-09/15 11:31:16.514: [pfcp] INFO: pfcp_server() [127.0.0.7]:8805 (../lib/pfcp/path.c:30)
-09/15 11:31:16.514: [sock] ERROR: socket bind(2) [10.11.0.7]:2152 failed (99:Cannot assign requested address) (../lib/core/ogs-socket.c:114)
-09/15 11:31:16.514: [sock] ERROR: udp_server() [10.11.0.7]:2152 failed (99:Cannot assign requested address) (../lib/core/ogs-udp.c:67)
-09/15 11:31:16.514: [app] ERROR: Failed to initialize UPF (../src/upf/app.c:28)
-09/15 11:31:16.514: [app] FATAL: Open5GS initialization failed. Aborted (../src/main.c:224)
-```
 
 ---
 ## Flow
@@ -152,3 +143,56 @@ NGAP is the protocol that runs over N2 interface.
 ![[n2-handover-procedure.png]]
 ### RAN
 radio access network
+
+
+### GNB config
+```
+# This example configuration outlines how to configure the srsRAN Project gNB to create a single TDD cell
+# transmitting in band 78, with 20 MHz bandwidth and 30 kHz sub-carrier-spacing. A USRP B200 is configured
+# as the RF frontend using split 8. Note in this example an external clock source is not used, so the sync
+# is not defined and the default is used.
+
+cu_cp:
+  amf:
+    addr: 127.0.0.5 # Jasmine: changed this from 127.0.1.100
+    port: 38412
+    bind_addr: 127.0.0.1
+    bind_interface: auto
+    supported_tracking_areas:
+      - tac: 7 # Jasmine: changed this from 7
+        plmn_list:
+          # - plmn: "00101" # Jasmine: changed this so UE can add APN
+          - plmn: "99970"
+          # - plmn: "99999"
+            tai_slice_support_list:
+              - sst: 1
+
+ru_sdr:
+  device_driver: uhd
+  device_args: type=b200,num_recv_frames=64,num_send_frames=64
+  # sync: external
+  srate: 23.04 # Jasmine: might adjust based on phone model
+  otw_format: default #sc12
+  tx_gain: 80  # Jasmine: might adjust based on phone model
+  rx_gain: 40  # Jasmine: might adjust based on phone model
+
+cell_cfg:
+  dl_arfcn: 632628  # Jasmine: not sure what this does
+  band: 78
+  channel_bandwidth_MHz: 20
+  common_scs: 30
+  plmn: "99970"
+  tac: 7 # Jasmine: changed this from 7 to match core config
+  pci: 1
+
+log:
+  filename: /tmp/gnb.log
+  all_level: warning
+
+pcap:
+  mac_enable: false
+  mac_filename: /tmp/gnb_mac.pcap
+  ngap_enable: false
+  ngap_filename: /tmp/gnb_ngap.pcap
+```
+### phone model nothing phone (2)
