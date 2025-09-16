@@ -30,8 +30,6 @@ NOW: so now i've changed the srsran gnb config and can try to run again.
 
 something is not persistent after rebooting might have to do that (some image with uhd or smth) again?? well when i did probe it's fine it's there. 
 
-yay it connects!
-
 when adding APNs on phone, turns out i can't use mcc/mnc with 001/01, but must use 999/70. 
 - so i changed the the config in srsran/configs/b200
 - also the `amf` and `nrf` and `upf` 
@@ -43,6 +41,15 @@ seems like when an UE actually connects, you should see ([ref](https://github.co
 so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
 
 maybe some of the daemons are funky. not sure how to alter them. at least i added scripts to start and stop all modules in `/etc/open5gs` . 
+
+`upf` gtpu address looks weird, why we use that?
+
+few directions: 
+- look at ngap handler, not sure where to find it. 
+- more config in usrp related to upf? 
+- upf config in open5gs says gtpu should be `10.11.0.7` but??? 
+- [ ] 99999 or 00101 does not allow adding APN on phones. so i'm using the default 99970, and if i want to use that, i'll need to turn on data roaming or something? 
+- [ ] look at open5gs photo 
 
 ---
 ## Flow
@@ -56,8 +63,43 @@ I think each `.yml` file in the root folder corresponds to each of these modules
 
 ![image](./images/open5gs.jpg)
 
+
+### Core services
 - Control plane: contains the authenticator, database (mongodb; for storing subscriber info), 
 - User plane: does some data transmission stuff. 
+
+```
+NRF - NF Repository Function
+SCP - Service Communication Proxy
+SEPP - Security Edge Protection Proxy
+AMF - Access and Mobility Management Function
+SMF - Session Management Function
+UPF - User Plane Function
+AUSF - Authentication Server Function
+UDM - Unified Data Management
+UDR - Unified Data Repository
+PCF - Policy and Charging Function
+NSSF - Network Slice Selection Function
+BSF - Binding Support Function
+```
+
+- NRF - registers and location of all other core services and does (IP address) lookups when one needs to communicate with another. 
+- SCP - routes messages between core services if direct communication isn't possible.
+- SEPP - secures communication between two different mobile networks.
+- AMF - stores and does authentication, registration with subscribers (phones).
+- SMF - set up connection session with internet when phone tries to connect to internet.
+- UPF - does the actual data forwarding.
+- AUSF - authenticates subscriber info, like checking if sim card info is valid. 
+- UDM - not sure! 
+- UDR - that's what mongodb does here i believe, it stores subscriber info. 
+- PCF - not sure! 
+- NSSF - assign the right slice of a network.
+- BSF - not sure! 
+
+### Mobile network & cellular network
+are used interchangeably.
+### 5G network slicing
+from Verizon - allows multiple logical networks to be created on top of a common shared physical network. Essentially this means segmenting parts of the network for different users and/or use cases. For example, it can have (1) dedicated slices for self-driving cars to ensure reliable communication, (2) a slice for smart factories to coordinate autonomous forklifts safely, and (3) a slice for remote medical procedures requiring high bandwidth and low latency. So that each slice has different properties that suites the specific needs of a purpose. 
 ### 5G non standalone v.s. 5G standalone
 former deploys 4G control plane infrastructures (like base stations) with higher data transfer rate; latter has its own dedicated hardware.
 - read more [here](https://www.netscout.com/what-is/5g-sa-vs-nsa)
@@ -119,7 +161,7 @@ some radio waves have very high frequency (like x-ray or gamma-ray) and longer r
 	- what's cooler is that amplitude can also be modified so that the can be more distinctions thus more bits in one wave.![image](./images/waves-encoding.png)
 ### RF frontend
 is a word for all the circuitry that converts radio signals to some kind of intermediate signal form (before they become electric).  
-### software defined radio
+### Software defined radio
 after getting the radio signals from hardware, but most processing (such as modulation) are done by software as opposed to having dedicated circuitry in a traditional radio. so there must be something **in the hardware** that converts signals **from radio to digital**. 
 
 ---
@@ -146,5 +188,4 @@ NG (= N2 + N3) is the interface between gNB and 5g core (i.e., srsRAN and open5G
 NGAP is the protocol that runs over N2 interface. 
 
 ![[n2-handover-procedure.png]]
-### RAN
-radio access network
+
