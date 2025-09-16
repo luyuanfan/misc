@@ -40,17 +40,6 @@ seems like when an UE actually connects, you should see ([ref](https://github.co
 
 so i think we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
 
-maybe some of the daemons are funky. not sure how to alter them. at least i added scripts to start and stop all modules in `/etc/open5gs` . 
-
-`upf` gtpu address looks weird, why we use that?
-
-few directions: 
-- look at ngap handler, not sure where to find it. 
-- more config in usrp related to upf? 
-- upf config in open5gs says gtpu should be `10.11.0.7` but??? 
-- [ ] 99999 or 00101 does not allow adding APN on phones. so i'm using the default 99970, and if i want to use that, i'll need to turn on data roaming or something? 
-- [ ] look at open5gs photo 
-
 ---
 ## Flow
 user equipment (phone + sim) → \[sends radio signal to] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
@@ -189,6 +178,8 @@ NGAP is the protocol that runs over N2 interface.
 
 ![[n2-handover-procedure.png]]
 
+### RAN
+radio access network
 
 
 ### GNB config
@@ -242,3 +233,59 @@ pcap:
   ngap_filename: /tmp/gnb_ngap.pcap
 ```
 ### phone model nothing phone (2)
+
+
+```
+# This example configuration outlines how to configure the srsRAN Project gNB to create a single TDD cell
+# transmitting in band 78, with 20 MHz bandwidth and 30 kHz sub-carrier-spacing. A USRP B200 is configured
+# as the RF frontend using split 8. Note in this example an external clock source is not used, so the sync
+# is not defined and the default is used.
+
+cu_cp:
+  amf:
+    addr: 127.0.0.5 # Jasmine: changed this from 127.0.1.100
+    port: 38412
+    bind_addr: 127.0.0.1
+    bind_interface: auto
+    supported_tracking_areas:
+      - tac: 1 # Jasmine: changed this from 7
+        plmn_list:
+          # - plmn: "00101" # Jasmine: changed this so UE can add APN
+          - plmn: "12345"
+            tai_slice_support_list:
+              - sst: 1
+
+ru_sdr:
+  device_driver: uhd
+  device_args: type=b200,num_recv_frames=64,num_send_frames=64
+  sync: external
+  srate: 23.04 # Jasmine: might adjust based on phone model
+               # # Required FLOAT (61.44). Sets the sampling rate of the RF-frontend in MHz.
+  otw_format: sc12
+  tx_gain: 80  # Jasmine: might adjust based on phone model
+               # Required FLOAT (50). Sets the transmit gain in dB. Supported: [0 - max value supported by radio].
+  rx_gain: 40  # Jasmine: might adjust based on phone model
+               # Required FLOAT (60). Sets the receive gain in dB. Supported: [0 - max value supported by radio].
+
+cell_cfg:
+  dl_arfcn: 632628  # Required UINT (536020). Sets the Downlink ARFCN.
+  band: 78  # Optional TEXT (auto). Sets the NR band being used for
+            # the cell. If not specified, will be set automatically
+            # based on ARFCN. Supported: all release 17 bands.
+  channel_bandwidth_MHz: 20 # 20 the number of PRBs will be derived from this.
+                         # Supported: [5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100].
+  common_scs: 30 # Required UINT (15). Sets the subcarrier spacing in KHz to be used by the cell. Supported: [15, 30].
+  plmn: "12345" # "00101"
+  tac: 1 # Jasmine: changed this from 7 to match core config
+  pci: 1
+
+log:
+  filename: /tmp/gnb.log
+  all_level: warning
+
+pcap:
+  mac_enable: false
+  mac_filename: /tmp/gnb_mac.pcap
+  ngap_enable: false
+  ngap_filename: /tmp/gnb_ngap.pcap
+```
