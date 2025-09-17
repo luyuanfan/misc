@@ -43,7 +43,7 @@ few directions:
 - [x] 99999 or 00101 does not allow adding APN on phones. so i'm using the default 99970, and if i want to use that, i'll need to turn on data roaming or something? 
 - [x] look at open5gs photo
 - [ ] believe the problem is that the station is broadcasting with some freqs or stuff that my phone cannot take or something. 
-
+- [ ] setting up another radio to use `uhd_fft`, remember to run it from `usr/share/uhd/490/images` with `sudo` probably. 
 ## Flow
 user equipment (phone + sim) → \[sends radio signal to] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
 
@@ -234,3 +234,10 @@ pcap:
   ngap_filename: /tmp/gnb_ngap.pcap
 ```
 ### phone model nothing phone (2)
+
+### Gain
+`tx_gain`: how much the usrp amplifies the signal before sending it out to the antenna. 
+`rx_gain`: how much usrp amplifies what it hears from the antenna. 
+
+
+use the uhd_fft thing and put in the freq of my radio and see if anything's there
