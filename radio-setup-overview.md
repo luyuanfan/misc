@@ -1,51 +1,5 @@
-Notes -
-
-- uhd is package (no source cuz it has bugs or version not stable)
-- open5gs is package
-- srsran is built from source
-
-plug usrp
-probe
-run uhd
-see log
-
-uhd building from source is also being weird. so rn we use the 4.9.0 release. **but i believe the 4.0.0 or 3.1.5. are the ones compatible with srsran** (rn with 4.9.0 there's an error when building srsran but it can be fixed by adding a line which is sketchy ig) -- so def switch back to that later if curr setup works. 
-
-open5gs build from source is also buggy. there is a open5gs vonr error that idk where it's from. trying with package (did not config logging, but that'll only affect journalctl prints ig so it's not a big deal; also webui is facing some troubles because srsran_proj does not have a release, i have to remove its ppa before **running(???)** the open5gs web page)
-
-srsran ppa has some problems i think. will look into what it is but since we build from source it doesn't matter. srsran build from source goes alright so long as i add a line in radio/uhd/radio_uhd_tx_stream on line 57 that falls through the case of event_code_ok. might be because my uhd version is too new. 
-
-install open5gs before srsran
-
-to use `uhd_usrp_probe`, make sure to unplug and replug. 
-
-and them you can run the gnb (with srsran) by passing in one of those yml files in the `configs` in the root folder.
-- rn running `gnb` after making sure the device is there gives in error. it says 'connection refused cu-up failed to connect with AMF on `127.01.100:38412`. which is kinda bullshit bc open5gs asks me to configure amf-ngap on `10.10.05` instead of `127.01.100`. why is gnb trying to connect to that address?? 
-- the guide said the only thing running on port 38412 should be amf-ngap on `127.0.0.5` so i'll try to change that. 
-when creating subscriber it also needs a AMF field which defaults to `8000`, dnn defaults to `internet` 
-
-so when trying to run `gnb` the reason it connects that way is that the config files in srsran project says to. according [this running open5gs page](https://open5gs.org/open5gs/docs/guide/01-quickstart/), must "- Make sure the PLMN and TAC of the eNB/gNB matches the settings in your MME/AMF". so this is defined in `srsRAN_Project/configs/b200smth` 
-
-something is not persistent after rebooting might have to do that (some image with uhd or smth) again?? well when i did probe it's fine it's there. 
-
-we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
-
-when adding APNs on phone, turns out i can't use mcc/mnc with 001/01 nor 999/99, so I use the default 999/70 in all config files. 
-
-seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one`
-
-added bash scripts to restart all open5gs daemons. 
-
-few directions: 
-- look at ngap handler, not sure where to find it. 
-- more config in usrp related to upf? 
-- [x] upf config in open5gs says gtpu should be `10.11.0.7` but??? if gnb and core are running on the same machine, keeping it 127.* should be fine. 
-- [x] 99999 or 00101 does not allow adding APN on phones. so i'm using the default 99970, and if i want to use that, i'll need to turn on data roaming or something? 
-- [x] look at open5gs photo
-- [ ] believe the problem is that the station is broadcasting with some freqs or stuff that my phone cannot take or something. 
-- [ ] setting up another radio to use `uhd_fft`, remember to run it from `usr/share/uhd/490/images` with `sudo` probably. 
 ## Flow
-user equipment (phone + sim) → \[sends radio signal to] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
+user equipment (phone + sim) → \[sends radio signal to\] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
 
 ## Open5GS
 Overview - is a software that builds the authenticating and routing for a cellular network (the signal processing stuff are handled by srsRAN, described below); supports both 4G/LTE and 5G networks.
@@ -181,6 +135,8 @@ NGAP is the protocol that runs over N2 interface.
 
 ![[n2-handover-procedure.png]]
 
+### RAN
+radio access network
 
 
 ### GNB config
@@ -233,11 +189,25 @@ pcap:
   ngap_enable: false
   ngap_filename: /tmp/gnb_ngap.pcap
 ```
-### phone model nothing phone (2)
 
-### Gain
-`tx_gain`: how much the usrp amplifies the signal before sending it out to the antenna. 
-`rx_gain`: how much usrp amplifies what it hears from the antenna. 
+## Notes
 
+uhd building from source is also being weird. so rn we use the 4.9.0 release. **but i believe the 4.0.0 or 3.1.5. are the ones compatible with srsran** (rn with 4.9.0 there's an error when building srsran but it can be fixed by adding a line which is sketchy ig) -- so def switch back to that later if curr setup works. 
 
-use the uhd_fft thing and put in the freq of my radio and see if anything's there
+After booting the USRP device, always make sure to do a `uhd_usrp_probe` to ensure it's actually detectable. 
+
+Then you can run `gnb` by passing in one of the `.yaml` files in the `srsRAN_Project/configs` folder.
+- rn running `gnb` after making sure the device is there gives in error. it says 'connection refused cu-up failed to connect with AMF on `127.01.100:38412`. which is kinda bullshit bc open5gs asks me to configure amf-ngap on `10.10.05` instead of `127.01.100`. why is gnb trying to connect to that address?? 
+when creating subscriber it also needs a AMF field which defaults to `8000`, APN/DNN defaulting to `internet` 
+
+so when trying to run `gnb` the reason it connects that way is that the config files in srsran project says to. according [this running open5gs page](https://open5gs.org/open5gs/docs/guide/01-quickstart/), must "- Make sure the PLMN and TAC of the eNB/gNB matches the settings in your MME/AMF". so this is defined in `srsRAN_Project/configs/b200smth` 
+
+something is not persistent after rebooting might have to do that (some image with uhd or smth) again?? well when i did probe it's fine it's there. 
+
+we can look at the logs located in `var/log/open5gs/` specifically `nrf` `upf` `amf`. 
+
+when adding APNs on phone, turns out i can't use mcc/mnc with 001/01 nor 999/99, so I use the default 999/70 in all config files. 
+
+seems like when an UE actually connects, you should see ([ref](https://github.com/srsran/srsRAN_Project/issues/706)) that `number of gNB-UE is now one`. 
+
+maybe some of the daemons are funky. not sure how to alter them. at least i added scripts to start and stop all modules in `/etc/open5gs`.
