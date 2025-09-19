@@ -25,13 +25,15 @@ cd build
 cmake ../  # or cmake -DCMAKE_FIND_ROOT_PATH=/usr ../
 ```
 
+Note: when doing cmake, python version higher than 3.8 cannot be seen by cmake. A solution is to add `python3.12` to the list of versions on line 60 in `uhd/host/cmake/Modules/UHDPython.cmake`. 
+
 Make and install: 
 ```
-make
+make -j $(nproc)
 make test # This step is optional
 sudo make install
 ```
 
-
+Note: add `#include <cstdint>` to the imported libraries in `uhd/host/lib/usrp/dboard/rhodium/rhodium_constants.hpp`. 
 
 
