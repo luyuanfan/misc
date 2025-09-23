@@ -1,5 +1,7 @@
 ## Install UHD (build from source)
 
+[best doc i can find](https://kb.ettus.com/Building_and_Installing_the_USRP_Open-Source_Toolchain_(UHD_and_GNU_Radio)_on_Linux). 
+
 Install dependencies: 
 ```
 sudo apt-get install autoconf automake build-essential ccache cmake cpufrequtils doxygen ethtool \
