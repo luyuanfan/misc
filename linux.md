@@ -1,3 +1,14 @@
+## network
+
+if wifi is not connecting, there might be configuration problems in netplan: 
+```
+sudo cp /etc/netplan/*.yaml ~/network-backup/
+
+sudo rm /etc/netplan/*.yaml
+
+sudo netplan apply
+```
+
 ## general
 
 loop back addresses - special ip addresses for sending packets across the same machine. conventionally the entire `127.0.0.0` to `127.255.255.255` range is reserved for this. 
