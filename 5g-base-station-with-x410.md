@@ -1,5 +1,7 @@
 ## Install UHD (build from source)
 
+### Building UHD and gnuradio
+
 [This doc solves everything](https://kb.ettus.com/Building_and_Installing_the_USRP_Open-Source_Toolchain_(UHD_and_GNU_Radio)_on_Linux). 
 
 Install dependencies: 
@@ -43,6 +45,17 @@ Download FPGA (field-programmable gateway array) images:
 sudo uhd_images_downloader
 ```
 
+## Connecting USRP device (x410)
+
+x410 has to be connected through Ethernet cable. In that case, follow the "Configuring Ethernet" section in the [offical guide](https://kb.ettus.com/Building_and_Installing_the_USRP_Open-Source_Toolchain_(UHD_and_GNU_Radio)_on_Linux).
+
+Setting IP addresses must be done manually because the host system and the USRP device are connected directly, and there is nothing (such as [DHCP](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)) that helps you to automatically assign IP addresses. Not having DHCP in between is actually preferred, because host and USRP talk via IP (hard coded in configuration files), so IP addresses should *not* be changing all the time. 
+
+Ubuntu 24.04 does not seem to allow configuring host system's device address through GUI interface. Alternatively, you must add a configuration file on the Ethernet interface. ([tutorial](https://gal.vin/posts/2023/ubuntu-static-ip/))
+
+When this is set up, the host system should be able to `ping` the USRP's address. If `ping`ing works, then `uhd_usrp_probe` would work as well. 
+
+
 ## Install Open5GS (build from source)
 
 Follow every step in [official guide](https://open5gs.org/open5gs/docs/guide/02-building-open5gs-from-sources/).
@@ -79,4 +92,6 @@ ninja -C build
 
 Follow every step in [official guide](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/installation.html).
 
-[this reddit post](https://stackoverflow.com/questions/33304828/when-trying-to-use-my-usrp-in-gnu-radio-i-get-a-no-devices-found-for). 
+### x410 configurations
+
+There is not default configuration file in `srsRAN_Project/configs`, so you must add one yourself. I'm just following [this post](https://github.com/srsran/srsRAN_Project/discussions/462), and it hasn't break so far. 

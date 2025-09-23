@@ -3,7 +3,7 @@
 to set static ip address ([tutorial](https://gal.vin/posts/2023/ubuntu-static-ip/))
 
 to understand the output of `ip addr` ([article](https://samuel-ricky.medium.com/how-to-interpret-the-output-of-ip-addr-show-8008c7c41dde))
- 
+
 if wifi is not connecting, there might be malformed configurations in netplan (this might not target the cause but it fixes the troubles): 
 ```
 sudo cp /etc/netplan/*.yaml ~/network-backup/
