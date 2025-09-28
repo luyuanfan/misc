@@ -76,6 +76,11 @@ To run all the 5G core services at once, write all the configurations you need i
 ./build/tests/app/5gc
 ```
 
+If only `.yaml` files are edited, no rebuild is needed, but you should restart all relevant services (but I'll just restart all),  
+```
+sudo systemctl restart open5gs-*
+```
+
 If any open5gs source files is edited, you must to recompile (no need to run `meson build`): 
 ```
 ninja -C build
