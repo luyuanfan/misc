@@ -1,5 +1,7 @@
 ## Install UHD (build from source)
 
+check [this](https://github.com/srsran/srsRAN_Project/issues/27) out.
+
 ### Building UHD and gnuradio
 
 [This doc solves everything](https://kb.ettus.com/Building_and_Installing_the_USRP_Open-Source_Toolchain_(UHD_and_GNU_Radio)_on_Linux). 
@@ -67,11 +69,17 @@ Sometimes these are these kind of error messages:
 
 It's likely because there is an previous NRF process from Open5GS already running there. When this happen, can simply:
 ```
-sudo pkill -9 open5gs-*
+pkill -9 open5gs-*
 ```
 This might happen because (1) in earlier runs, the processes listening on that port is still here and has not been shut down cleanly. So, two processes collides; (2) these NFs are run from different shells, and they are not considered the same one. 
 
+Write all configuration i `sample.yaml`
+```
+./build/configs/sample.yaml
+```
+
 To run all the 5G core services at once, write all the configurations you need in `open5gs/build/tests/app/5gc`, and then run: 
+
 ```
 ./build/tests/app/5gc
 ```
@@ -97,6 +105,15 @@ ninja -C build
 
 Follow every step in [official guide](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/installation.html).
 
+Run: 
+```
+sudo gnb -C configs/gnb_x410.yml
+```
+
+To see if the radio is on, use the `uhd_fft` tool with another radio (doesn't work with this yet): 
+```
+sudo uhd_fft -a 192.168.20.2 -f 6326.28e6
+```
 ## Configs
 
 These two config combinations currently runs: 
