@@ -83,6 +83,37 @@ Then simply run the file `open5gs/build/tests/app/5gc`:
 ./build/tests/app/5gc
 ```
 
+\[Reboot\] **Remember to set up TUN device (not persistent after rebooting)**:
+```
+sudo ip tuntap add name ogstun mode tun
+sudo ip addr add 10.45.0.1/16 dev ogstun
+sudo ip addr add 2001:db8:cafe::1/48 dev ogstun
+sudo ip link set ogstun up
+```
+
+Also remember to add a route for the UE to have WAN connectivity: 
+```
+### Enable IPv4/IPv6 Forwarding
+$ sudo sysctl -w net.ipv4.ip_forward=1
+$ sudo sysctl -w net.ipv6.conf.all.forwarding=1
+
+### Add NAT Rule
+$ sudo iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
+$ sudo ip6tables -t nat -A POSTROUTING -s 2001:db8:cafe::/48 ! -o ogstun -j MASQUERADE
+```
+
+Configure the firewall correctly. Some operating systems (Ubuntu) by default enable firewall rules to block traffic.
+```
+$ sudo ufw status
+Status: active
+$ sudo ufw disable
+Firewall stopped and disabled on system startup
+$ sudo ufw status
+Status: inactive
+```
+
+See logs in `$INSTALL_PREFIX/var/log/open5gs/*.log`.
+
 ### Modifications and rebuilds
 
 If only `.yaml` files are edited, no rebuild is necessary, but you should restart all relevant services (but I'll just restart everything): 
@@ -100,7 +131,14 @@ However if a build is broken and you want to start fresh, do:
 rm -rf build
 meson build --prefix=`pwd`/install
 ninja -C build
+### check if the build is corrrect
+cd build
+meson test -v
 ```
+
+### Debugging core services
+- Can use GDB to debug (but I feel like that might be a after changing configuration file type of situation).
+- Or use the `-d` flag.  
 
 ## Install srsRAN (build from source)
 
@@ -111,15 +149,13 @@ Run:
 sudo gnb -C configs/gnb_x410.yml
 ```
 
-**Remember to set up TUN device (not persistent after rebooting)**:
-```
-sudo ip tuntap add name ogstun mode tun
-sudo ip addr add 10.45.0.1/16 dev ogstun
-sudo ip addr add 2001:db8:cafe::1/48 dev ogstun
-sudo ip link set ogstun up
-```
-
-**Also remember to tune network buffers** (for more information, see [this description](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/running.html)): 
+\[Reboot\] **Also remember to tune network buffers** (for more information, see [this description](https://docs.srsran.com/projects/project/en/latest/user_manuals/source/running.html)): 
 ```
 sudo ./scripts/srsran_performance
+```
+
+## Debugging
+
+```
+/tmp/gnb.log
 ```
