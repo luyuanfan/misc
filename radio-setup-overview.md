@@ -28,13 +28,13 @@ NSSF - Network Slice Selection Function
 BSF - Binding Support Function
 ```
 
-- ==NRF== - registers and location of all other core services and does (IP address) lookups when one needs to communicate with another. 
+- NRF - registers and location of all other core services and does (IP address) lookups when one needs to communicate with another. 
 - SCP - routes messages between core services if direct communication isn't possible.
 - SEPP - secures communication between two different mobile networks.
-- ==AMF== - stores and does authentication, registration with subscribers (phones).
+- AMF - stores and does authentication, registration with subscribers (phones).
 	- NGAP - is the protocol handling communication between AMF and the base station.
 - SMF - set up connection session with internet when phone tries to connect to internet.
-- ==UPF== - does the actual data forwarding.
+- UPF - does the actual data forwarding.
 	- asks for gtp-u server address
 		- GPRS Tunnelling Protocol (GTP); gtp-u carries data between RAN's and core networks.
 		- Listen for GTP-U traffic on this IP address. 
