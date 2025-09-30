@@ -1,3 +1,9 @@
+Overall this tutorial should do it: [Link](https://docs.srsran.com/projects/project/en/latest/tutorials/source/cotsUE/source/index.html#srsran-gnb-with-cots-ues)
+
+List of [possible issues](https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/)
+
+There's a red light on RF0 here's the [guide](https://files.ettus.com/manual/page_usrp_x4xx.html). 
+
 ## Building UHD and gnuradio from source
 
 [This doc solves everything](https://kb.ettus.com/Building_and_Installing_the_USRP_Open-Source_Toolchain_(UHD_and_GNU_Radio)_on_Linux). 
@@ -91,6 +97,11 @@ sudo ip addr add 2001:db8:cafe::1/48 dev ogstun
 sudo ip link set ogstun up
 ```
 
+Alternatively run: 
+```
+sudo ./misc/netconf.sh
+```
+
 Also remember to add a route for the UE to have WAN connectivity: 
 ```
 ### Enable IPv4/IPv6 Forwarding
@@ -111,8 +122,6 @@ Firewall stopped and disabled on system startup
 $ sudo ufw status
 Status: inactive
 ```
-
-See logs in `$INSTALL_PREFIX/var/log/open5gs/*.log`.
 
 ### Modifications and rebuilds
 
@@ -156,6 +165,6 @@ sudo ./scripts/srsran_performance
 
 ## Debugging
 
-```
-/tmp/gnb.log
-```
+See gNB log in `/tmp/gnb.log`
+
+See Open5GS logs in `$INSTALL_PREFIX/var/log/open5gs/*.log`.
