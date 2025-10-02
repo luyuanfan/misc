@@ -1,3 +1,5 @@
+Red light and can't lock gps
+
 Overall this tutorial should do it: [Link](https://docs.srsran.com/projects/project/en/latest/tutorials/source/cotsUE/source/index.html#srsran-gnb-with-cots-ues)
 
 List of [possible issues](https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/)
