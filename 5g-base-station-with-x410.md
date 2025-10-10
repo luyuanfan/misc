@@ -1,4 +1,8 @@
-Red light and can't lock gps
+To work with the docker image: 
+```
+sudo docker ps
+sudo docker exec -it <docker-id> bash
+```
 
 Overall this tutorial should do it: [Link](https://docs.srsran.com/projects/project/en/latest/tutorials/source/cotsUE/source/index.html#srsran-gnb-with-cots-ues)
 
