@@ -1,8 +1,15 @@
-To work with the docker image: 
+To work with the docker image, do 
 ```
 sudo docker ps
 sudo docker exec -it <docker-id> bash
 ```
+
+To see `.log` files of core in docker image, do:
+```
+find / -name "*.log"
+```
+
+The ones I care about so far is `/core.log`. 
 
 Overall this tutorial should do it: [Link](https://docs.srsran.com/projects/project/en/latest/tutorials/source/cotsUE/source/index.html#srsran-gnb-with-cots-ues)
 
