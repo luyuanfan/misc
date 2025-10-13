@@ -1,10 +1,38 @@
-Red light and can't lock gps
+To work with the docker image, do 
+```
+sudo docker ps
+sudo docker exec -it <docker-id> bash
+```
+
+To see `.log` files of core in docker image, do:
+```
+find / -name "*.log"
+```
+
+The ones I care about so far is `/core.log` and `/tmp/enb.log`
+
+For some reasons the UE defaults its APN to `WAP.VODAFONE.CO.UK` instead of using `internet`. My temporary fix is changing the APN in open5gs database to vodafone as well:
+```
+db.subscribers.updateOne(
+  { imsi: "999990000000001" },
+  { $set: { "slice.0.session.0.name": "WAP.VODAFONE.CO.UK" } }
+)
+```
+
+Currently the UE attaches to network but does not have access to internet. This might be because the docker container has not been configured to forward packets for the UE. Although I believe that it has already been done in the init script, I ran the following commands in the docker container just in case:
+```
+route
+<see list of network interfaces; we want the default one>
+find / -name "*srsepc_if_masq*"
+<go to that directory, chmod of the file>
+sudo ./srsepc_if_masq.sh <interface name>
+```
 
 Overall this tutorial should do it: [Link](https://docs.srsran.com/projects/project/en/latest/tutorials/source/cotsUE/source/index.html#srsran-gnb-with-cots-ues)
 
 List of [possible issues](https://open5gs.org/open5gs/docs/troubleshoot/01-simple-issues/)
 
-There's a red light on RF0 here's the [guide](https://files.ettus.com/manual/page_usrp_x4xx.html). 
+There's a red light on RF0 here's the [guide](https://files.ettus.com/manual/page_usrp_x4xx.html). It is not a problem.
 
 ## Building UHD and gnuradio from source
 
