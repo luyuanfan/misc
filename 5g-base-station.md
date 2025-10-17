@@ -1,3 +1,5 @@
+> next time we start try to run the lte version with the build-from-source branch and see if the compat number still has a mismatch. if we still do, it's because the file system update is incomplete and the MPM numbers still have a mismatch ([see this forum](https://forums.ni.com/t5/USRP-Software-Radio/USRP-X410-MPM-version-update/td-p/4347142))
+
 Please see the updating file system section [here](https://kb.ettus.com/USRP_X410/X440_Getting_Started_Guide#Updating_Filesystems). This is all very exciting. SSH onto the device and saying something like:
 ```
 sudo uhd_images_downloader -t mender -t x4xx --yes
