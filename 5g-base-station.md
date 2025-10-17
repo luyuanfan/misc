@@ -1,3 +1,17 @@
+Tried to run this in Docker but should not have. Changing URSP's image should happen from the host machine.
+```
+# Download USRP images
+RUN /usr/lib/uhd/utils/uhd_images_downloader.py
+# MPM major compat number mismatch. Expected: 4.0 Actual: 5.3. 
+# Please update the version of MPM on your USRP device.
+# RUN uhd_images_downloader -t mender -t x4xx --yes
+# COPY /usr/local/share/uhd/images/usrp_x4xx_fs.mender root@192.168.20.2:~/. 
+# RUN mender install /usr/local/share/uhd/images/usrp_x4xx_fs.mender
+# RUN reboot
+# RUN mender commit 
+RUN uhd_images_downloader -t sdimg -t x4xx -y
+```
+
 To work with the docker image, do 
 ```
 sudo docker ps
