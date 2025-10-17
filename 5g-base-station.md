@@ -1,6 +1,11 @@
-Please see the updating file system section [here](https://kb.ettus.com/USRP_X410/X440_Getting_Started_Guide#Updating_Filesystems). This is all very exciting. SSH onto the device by saying something like:
+Please see the updating file system section [here](https://kb.ettus.com/USRP_X410/X440_Getting_Started_Guide#Updating_Filesystems). This is all very exciting. SSH onto the device and saying something like:
 ```
+sudo uhd_images_downloader -t mender -t x4xx --yes
+scp /usr/local/share/uhd/images/usrp_x4xx_fs.mender root@192.168.20.2:~/. 
 ssh root@192.168.20.2
+mender install /home/root/usrp_x4xx_fs.mender
+reboot
+mender commit
 ```
 
 Tried to run this in Docker but should not have. Changing URSP's image should happen from the host machine.
