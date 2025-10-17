@@ -4,8 +4,8 @@ sudo uhd_images_downloader -t mender -t x4xx --yes
 scp /usr/local/share/uhd/images/usrp_x4xx_fs.mender root@192.168.20.2:~/. 
 ssh root@192.168.20.2
 mender install /home/root/usrp_x4xx_fs.mender
+mender commit # then it would say something like INFO[0000] Committing update 
 reboot
-mender commit
 ```
 
 Tried to run this in Docker but should not have. Changing URSP's image should happen from the host machine.
