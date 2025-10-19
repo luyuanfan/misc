@@ -1,9 +1,0 @@
-## Summary
-network researchers would like to have the chance to test their protocols in real-world settings. However, these testings can be considered disruptive by network admins, and building infrastructures dedicated to research is too unrealistically costly. the authors propose an alternative solution, OpenFlow (includes both protocol and hardware), that enables these tests to share an isolated slice with the real-world network infrastructure and traffic; deploys exisiting hardware (so it's not as expensive); and is able to collect some statistics. 
-
-there are three components: the remote controller, dedicated OpenFlow switch, and OpenFlow enabled switch. specifically, remote controllers direct the openflow switch about what to do with packets (by changing the flow table through the Secure Channel with the OpenFlow protocol). if a research has a new protocol to test, they will send the first packet to the OpenFlow controller which in turn sends it out to its destination. along this path, all switches will have their flow table updated with the rules of this new protocol (which essentially is just how to process these special packets). after having the flow tables set up, all subsequent packets are sent out at full speed. 
-
-## Comments
-why is adding or removing or changing flow so essential to this paper? is it assumed that all protocol differences boils down to how the flows are processed at each switch (i.e., what packet goes through what port, gets dropped, gets changed, etc.)? 
-
-also curious as to if research-purpose slice is completely isolated (is it an one directional of it not affecting real-world traffic, yet real-world traffic still have impact on it), how does it do experiments with real-world traffic or congestions?

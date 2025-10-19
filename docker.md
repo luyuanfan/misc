@@ -6,7 +6,7 @@ List containers that are currently running:
 ```
 docker ps
 ```
-List all containers that have ran:
+List all containers that have been ran:
 ```
 docker ps -a
 ```
@@ -18,5 +18,9 @@ Attaches us to an interactive terminal session:
 ```
 docker run -it <image name>
 ```
-
+Push:
+```
+docker login
+docker push <username>/<image name>
+```
 
