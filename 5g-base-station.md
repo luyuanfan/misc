@@ -1,3 +1,31 @@
+Updating the file system might have changed or broken the USRP's ip address so I cannot see it anymore. Here's what i was looking at [link](https://files.ettus.com/manual/page_usrp_x4xx.html#x4xx_getting_started_serial).
+
+> next time we start try to run the lte version with the build-from-source branch and see if the compat number still has a mismatch. if we still do, it's because the file system update is incomplete and the MPM numbers still have a mismatch ([see this forum](https://forums.ni.com/t5/USRP-Software-Radio/USRP-X410-MPM-version-update/td-p/4347142))
+
+Please see the updating file system section [here](https://kb.ettus.com/USRP_X410/X440_Getting_Started_Guide#Updating_Filesystems). This is all very exciting. SSH onto the device and saying something like:
+```
+sudo uhd_images_downloader -t mender -t x4xx --yes
+scp /usr/local/share/uhd/images/usrp_x4xx_fs.mender root@192.168.20.2:~/. 
+ssh root@192.168.20.2
+mender install /home/root/usrp_x4xx_fs.mender
+mender commit # then it would say something like INFO[0000] Committing update 
+reboot
+```
+
+Tried to run this in Docker but should not have. Changing URSP's image should happen from the host machine.
+```
+# Download USRP images
+RUN /usr/lib/uhd/utils/uhd_images_downloader.py
+# MPM major compat number mismatch. Expected: 4.0 Actual: 5.3. 
+# Please update the version of MPM on your USRP device.
+# RUN uhd_images_downloader -t mender -t x4xx --yes
+# COPY /usr/local/share/uhd/images/usrp_x4xx_fs.mender root@192.168.20.2:~/. 
+# RUN mender install /usr/local/share/uhd/images/usrp_x4xx_fs.mender
+# RUN reboot
+# RUN mender commit 
+RUN uhd_images_downloader -t sdimg -t x4xx -y
+```
+
 To work with the docker image, do 
 ```
 sudo docker ps
