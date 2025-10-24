@@ -1,3 +1,32 @@
+srsRAN_project build options: 
+```
+option(STOP_ON_WARNING       "Interrupt application on warning"           OFF)
+option(ENABLE_WERROR         "Stop compilation on errors"                 ON)
+option(ENABLE_TSAN           "Enable clang thread sanitizer"              OFF)
+option(ENABLE_ASAN           "Enable clang address sanitizer"             OFF)
+option(ENABLE_UBSAN          "Enable clang undefined behaviour sanitizer" OFF)
+option(ENABLE_UBSAN_MIN      "Enable clang sanitizer minimal runtime"     OFF)
+option(ENABLE_RTSAN          "Enable clang real-time sanitizer"           OFF)
+option(ENABLE_GCOV           "Enable code coverage"                       OFF)
+option(ENABLE_BACKWARD       "Enable backward"                            ON)
+option(ENABLE_UHD            "Enable UHD"                                 ON)
+option(ENABLE_ZEROMQ         "Enable ZeroMQ"                              OFF)
+option(ENABLE_FFTW           "Enable FFTW"                                ON)
+option(ENABLE_MKL            "Enable Intel MKL"                           ON)
+option(ENABLE_ARMPL          "Enable ARM performance library"             ON)
+option(ENABLE_DPDK           "Enable DPDK"                                OFF)
+option(ENABLE_LIBNUMA        "Enable LibNUMA"                             OFF)
+option(ENABLE_EXPORT         "Enable PIC and export libraries"            OFF)
+option(ENABLE_TRX_DRIVER     "Enable Amarisoft TRX driver library"        OFF)
+option(ENABLE_PLUGINS        "Compile plugins in the plugin folder"       ON)
+option(BUILD_TESTING         "Compile tests"                              OFF)
+option(ENABLE_GPROF          "Enable gprof"                               OFF)
+option(FORCE_DEBUG_INFO      "Add debug information to Release build"     OFF)
+if (BUILD_TESTING)
+option(USE_PHY_TESTVECTORS   "Enable testvector PHY tests"                OFF)
+endif(BUILD_TESTING)
+```
+
 Updating the file system might have changed or broken the USRP's ip address so I cannot see it anymore. Here's what i was looking at [link](https://files.ettus.com/manual/page_usrp_x4xx.html#x4xx_getting_started_serial).
 
 > next time we start try to run the lte version with the build-from-source branch and see if the compat number still has a mismatch. if we still do, it's because the file system update is incomplete and the MPM numbers still have a mismatch ([see this forum](https://forums.ni.com/t5/USRP-Software-Radio/USRP-X410-MPM-version-update/td-p/4347142))
