@@ -1,3 +1,6 @@
+read this:
+https://github.com/srsran/srsRAN_Project/issues/859
+
 another few things i can try if ue attach but cannot connect to internet:
 ```
 sudo sysctl -w net.ipv4.ip_forward=1
