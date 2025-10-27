@@ -1,3 +1,14 @@
+another few things i can try if ue attach but cannot connect to internet:
+```
+sudo sysctl -w net.ipv4.ip_forward=1
+sudo sysctl -w net.ipv4.conf.all.forwarding=1
+sudo sysctl -w net.ipv6.conf.all.forwarding=1
+sudo iptables -t nat -A POSTROUTING -o IFNAME_CONNECTED_TO_INTERNET -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -s 10.45.0.0/16 ! -o ogstun -j MASQUERADE
+sudo iptables -P FORWARD ACCEPT
+sudo ip ro add 10.45.0.0/16 via 10.53.1.2
+```
+
 srsRAN_project build options: 
 ```
 option(STOP_ON_WARNING       "Interrupt application on warning"           OFF)
