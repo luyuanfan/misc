@@ -13,3 +13,16 @@ https://howltestuffworks.blogspot.com/2019/10/5g-nr-synchronization-signalpbch-b
 The UE uses NR synchronization signals and PBCH (Physical Broadcast Channel) to derive the necessary information required to access the cell.
 
 
+https://github.com/srsran/srsRAN_Project/issues/1118
+
+https://github.com/srsran/srsRAN_Project/issues/1102
+
+https://github.com/srsran/srsRAN_Project/issues/992
+
+https://github.com/srsran/srsRAN_Project/issues/958
+
+https://github.com/srsran/srsRAN_Project/issues/947
+
+github.com/srsran/srsRAN_Project/issues/939
+
+https://github.com/srsran/srsRAN_Project/issues/930
