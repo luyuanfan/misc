@@ -1,3 +1,7 @@
+i went through some tutorials on handover:
+inter-cell handover (within one gNB) with multiple USRPs is possible (https://github.com/srsran/srsRAN_Project/issues/654), but inter-gNB handover is not supported and not planned to be supported (https://github.com/srsran/srsRAN_Project/discussions/815).
+to do inter-cell handover with multiple USRPs, we need to do a CU/DU split, run two DUs, each with its own USRP device. (https://docs.srsran.com/projects/project/en/latest/tutorials/source/cu_du_split/source/index.html)
+
 ## Flow
 user equipment (phone + sim) → \[sends radio signal to\] → base station/cell tower (gNB made by usrp + ghd as hardware driver + srsran) → goes into open5gs core → sets up WAN connectivity so user plane reaches the actual internet
 
