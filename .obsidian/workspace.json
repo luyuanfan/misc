@@ -18,8 +18,21 @@
               "icon": "lucide-book-up",
               "title": "Release Notes 1.9.14"
             }
+          },
+          {
+            "id": "6c2a701d5fd161be",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.10.6"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.10.6"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -168,7 +181,7 @@
       "github-sync:Sync with Remote": false
     }
   },
-  "active": "73f9adde87521c50",
+  "active": "6c2a701d5fd161be",
   "lastOpenFiles": [
     "radio-setup-overview.md",
     "5g-base-station-with-x410.md",
