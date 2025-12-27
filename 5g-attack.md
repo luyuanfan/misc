@@ -16,7 +16,7 @@
 
 - User Plane (UPF - User Plane Function): carries user data packets between the cell and the external WAN. It contains only: 
     - **UPF** - Does data forwarding. It connects back to SMF.
-kkk
+
 ## Roaming
 
 There are two types of 5G Roaming (both are supported by Open5GS):
@@ -32,3 +32,16 @@ It'd be helpful to figure out the steps of how Open5GS and srsRAN handles the in
 In practice, we can try entering a mismatched PLMN in the gNB configuration file and see which service reports errors. It will likely be the one that we want to modify.
 
 Based on eyeballing service responsibilities, I would guess AUSF and UDM/UDR are our targets. 
+
+```log
+core  | 12/26 23:49:57.892: [amf] WARNING: NG-Setup failure: (../src/amf/ngap-handler.c:390)
+core  | 12/26 23:49:57.892: [amf] WARNING:     globalGNB_ID PLMN-ID is foreign (../src/amf/ngap-handler.c:391)
+cu    | "NG Setup Procedure" failed. AMF NGAP cause: "unknown-PLMN-or-SNPN"
+cu    | srsRAN ERROR: CU-CP failed to connect to AMF
+core  | 12/26 23:49:57.974: [amf] INFO: gNB-N2[127.0.0.1] connection refused!!! (../src/amf/amf-sm.c:997)
+```
+
+Tracing down to `src/amf/amf-sm.c`. The struct `gnb` is initialized in this file, and is then passed to `ngap-handler.c`. 
+
+There is case switching on `switch (e->h.id)`, where one of the case is our connection refused. 
+- We should look into `amf_sm_debug` (which seems to be a thin wrapper around `ogs_debug`) and `ogs_assert`. 
