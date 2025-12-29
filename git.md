@@ -2,11 +2,13 @@
 
 Given someone's repo, if we want to make its old `origin` as `upstream`, and add our own repo as the new `origin`, do:
 
-`<myrepo>` and `<theirrepo>`
+`<my repo>` and `<their repo>`
 ```bash
-git clone <theirrepo>
-cd <theirrepo>
-git remote set-url origin <myrepo>
-git remote add upstream <theirrepo>
+# first, make a new repo called <my repo>, then
+git clone <their repo>
+cd <their repo>
+git remote set-url origin <my repo>
+git remote add upstream <their repo>
 git push origin
+git remote -v # check remote situations
 ```
