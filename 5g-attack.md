@@ -67,7 +67,9 @@ If we do a search for keyword `PLMN`, notably these files show up:
 - `lib/sbi/openapi/model/data_set_id.c` which contains a function called `OpenAPI_data_set_id_FromString`, but I think it gets its values from command line.
 - `lib/sbi/openapi/model/global_ran_node_id.c` I think this is what we are ultimately looking for.
 
-My major concern is that maybe the PLMN is simutaneously passed into multiple core services. However, from the service chart it seems like everything should have to first go through AMF via N2 (which I'm not sure what it means) and this is where NGAP lives.
+> I have tried modifying the `plmn_id.c` but the location is 100 percent incorrect because that way we would be changing every PLMN ever added. The correct next step is probably finding the place where we get PLMN from srsRAN, which should come with an assertion function of some sort. Frankly I have not read the gNB log and try to see if srsRAN gets the PLMN from Open5GS and perform some sort of checks as well. (I think a good next step is to do this.) We want to find a place where we verify gNB PLMN against the PLMN we have in our core database. 
+
+My major concern is that maybe the PLMN is simultaneously passed into multiple core services. However, from the service chart, it seems like everything should have to first go through AMF via N2 (which I'm not sure what it means), and this is where NGAP lives.
 
 ## Open5GS Source Code Rebuild
 
