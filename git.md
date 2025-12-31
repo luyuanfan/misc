@@ -12,3 +12,9 @@ git remote add upstream <their repo>
 git push origin
 git remote -v # check remote situations
 ```
+
+## Delete branches
+```bash
+git push -d <remote_name> <branchname>   # Delete remote
+git branch -d <branchname>               # Delete local
+```
