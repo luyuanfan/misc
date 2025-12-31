@@ -78,7 +78,6 @@ cd open5gs-dev
 ninja -C build
 # optionally check if build compilation is correct
 cd build
-meson test -v
 # if there are changes made to the configuration files, delete install dir and start over
 rm -Rf ../install
 ninja install
